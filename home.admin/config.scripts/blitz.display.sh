@@ -513,7 +513,6 @@ if [ "${command}" == "set-display" ]; then
 
     # install new state
     install_lcd "${paramDisplayClass}
-
   else
     echo "err='unknown parameter'"
     exit 1
