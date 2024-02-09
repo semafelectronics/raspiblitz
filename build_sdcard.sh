@@ -9,7 +9,7 @@
 # setup fresh SD card with image above - login per SSH and run this script:
 ##########################################################################
 
-defaultRepo="raspiblitz" #user that hosts a `raspiblitz` repo
+defaultRepo="semafelectronics" #user that hosts a `raspiblitz` repo
 defaultBranch="dev-v1.10-lcd20"
 
 defaultAPIuser="fusion44"
@@ -206,7 +206,7 @@ curl --header "X-GitHub-Api-Version:2022-11-28" -s "https://api.github.com/repos
 # DISPLAY-CLASS
 # ----------------------------------------
 # Could be 'hdmi', 'headless' or 'lcd' (lcd is default)
-: "${display:=lcd35}"
+: "${display:=lcd20}"
 range_argument display "lcd35" "lcd20" "hdmi" "headless"
 
 # TWEAK-BOOTDRIVE
