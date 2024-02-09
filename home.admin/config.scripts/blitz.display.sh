@@ -318,7 +318,7 @@ function install_lcd() {
       exit 1
     fi
 
-    # touch screen calibration
+    
     if [ "$lcd_type" != "lcd20" ]; then
       # touch screen calibration
       apt-get install -y xserver-xorg-input-evdev
@@ -513,7 +513,7 @@ if [ "${command}" == "set-display" ]; then
     uninstall_lcd "${paramDisplayClass}"
 
     # install new state
-    install_lcd "${paramDisplayClass}
+    install_lcd "${paramDisplayClass}"
   else
     echo "err='unknown parameter'"
     exit 1
