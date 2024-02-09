@@ -528,4 +528,5 @@ fi
 
 # unknown command
 echo "error='unknown command'"
+
 exit 1
