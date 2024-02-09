@@ -294,6 +294,7 @@ function install_lcd() {
     # echo "enable_uart=1" >> /boot/config.txt
     sed -i "s/^dtoverlay=.*//g" /boot/config.txt 
     if [ "$lcd_type" == "lcd20" ]; then
+      echo "dtparam=i2c_arm=on" >> /boot/firmware/config.txt
       echo "dtoverlay=waveshare20lcd" >> /boot/config.txt
       echo "dtoverlay=waveshare20lcd" >> /boot/firmware/config.txt
     else
