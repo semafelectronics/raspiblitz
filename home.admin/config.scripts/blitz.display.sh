@@ -259,7 +259,7 @@ function install_lcd() {
     lcd_driver_dir="wavesharelcd-64bit-rpi"
     [ "$lcd_type" == "lcd20" ] && lcd_driver_dir="raspiblitz20lcd"
     cd /home/admin/$lcd_driver_dir
-    sudo -u admin git checkout master
+    sudo -u admin git checkout main
     if [ "$lcd_type" != "lcd20" ]; then
 	      sudo -u admin git reset --hard 5a206a7 || exit 1
     fi
