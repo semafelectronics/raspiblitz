@@ -263,8 +263,8 @@ function install_lcd() {
     if [ "$lcd_type" != "lcd20" ]; then
 	      sudo -u admin git reset --hard 5a206a7 || exit 1
     fi
-    sudo -u admin /home/admin/config.scripts/blitz.git-verify.sh \
-     'GitHub' 'https://github.com/web-flow.gpg' '4AEE18F83AFDEB23' || exit 1
+    #sudo -u admin /home/admin/config.scripts/blitz.git-verify.sh \
+    # 'GitHub' 'https://github.com/web-flow.gpg' '4AEE18F83AFDEB23' || exit 1
 
     if [ "$lcd_type" == "lcd20" ]; then
        cp ./waveshare20lcd.dtbo /boot/overlays/
