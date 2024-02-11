@@ -204,7 +204,7 @@ function prepareinstall() {
 
   if [ "$lcd_type" == "lcd20" ]; then
     lcd_driver_repo="https://github.com/semafelectronics/raspiblitz20lcd.git"
-    lcd_driver_dir="download/raspiblitz20lcd"
+    lcd_driver_dir="download/raspiblitz20lcd/"
   fi
 
   repoCloned=$(sudo -u admin ls /home/admin/$lcd_driver_dir/README.md 2>/dev/null| grep -c README.md)
@@ -257,7 +257,7 @@ function install_lcd() {
     # Downloading LCD Driver from Github
     prepareinstall "$lcd_type"
     lcd_driver_dir="wavesharelcd-64bit-rpi"
-    [ "$lcd_type" == "lcd20" ] && lcd_driver_dir="download/raspiblitz20lcd"
+    [ "$lcd_type" == "lcd20" ] && lcd_driver_dir="download/raspiblitz20lcd/"
     cd /home/admin/$lcd_driver_dir
     sudo -u admin git checkout main
     if [ "$lcd_type" != "lcd20" ]; then
