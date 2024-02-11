@@ -851,8 +851,12 @@ if [ "${display}" != "headless" ] || [ "${baseimage}" = "raspios_arm64" ]; then
   /home/admin/config.scripts/blitz.display.sh set-display ${display}
   if [ "${display}" == "lcd20" ]; then
     # activate fan control service as well
-    cp /home/admin/raspiblitz20lcd/fan_control.service /etc/systemd/system/fan_control.service
+    chmod +x /home/admin/raspiblitz20lcd/fan_control.py
+    cp /home/admin/download/raspiblitz20lcd/fan_control.service /etc/systemd/system/fan_control.service
+    chmod 644 /lib/systemd/system/fan_control.service
+    systemctl daemon-reload
     systemctl enable fan_control.service
+    sudo systemctl start fan_control.service
   else
      /home/admin/config.scripts/blitz.display.sh rotate 1
   fi
