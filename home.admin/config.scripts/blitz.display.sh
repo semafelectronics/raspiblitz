@@ -268,6 +268,9 @@ function install_lcd() {
 
     if [ "$lcd_type" == "lcd20" ]; then
        cp ./waveshare20lcd.dtbo /boot/overlays/
+       bash -c "echo '[Service]' >> /etc/systemd/system/getty@tty1.service.d/autologin.conf"
+       bash -c "echo 'ExecStart=' >> /etc/systemd/system/getty@tty1.service.d/autologin.conf"
+       bash -c "echo 'ExecStart=-/sbin/agetty --autologin pi --noclear %I 38400 linux' >> /etc/systemd/system/getty@tty1.service.d/autologin.conf"
     else
       # customized from https://github.com/tux1c/wavesharelcd-64bit-rpi/blob/master/install.sh
       # prepare X11
