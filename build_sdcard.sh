@@ -10,7 +10,7 @@
 # setup fresh SD card with image above - login via SSH and run this script:
 ##########################################################################
 
-defaultRepo="raspiblitz" # user that hosts a `raspiblitz` repo
+defaultRepo="semafelectronics" # user that hosts a `raspiblitz` repo
 defaultBranch="v1.11" # latest version branch
 
 defaultAPIuser="fusion44"
@@ -29,15 +29,15 @@ usage(){
   printf %s"${me} [--option <argument>]
 
 Options:
-  -EXPORT                                  just print build parameters & exit'
-  -h, --help                               this help info
-  -i, --interaction [0|1]                  interaction before proceeding with execution (default: 1)
-  -f, --fatpack [0|1]                      fatpack mode (default: 1)
-  -u, --github-user [raspiblitz|other]     github user to be checked from the repo (default: ${defaultRepo})
-  -b, --branch [v1.7|v1.8]                 branch to be built on (default: ${defaultBranch})
-  -d, --display [lcd|hdmi|headless]        display class (default: lcd)
-  -t, --tweak-boot-drive [0|1]             tweak boot drives (default: 1)
-  -w, --wifi-region [off|US|GB|other]      wifi iso code (default: US) or 'off'
+  -EXPORT                                    just print build parameters & exit'
+  -h, --help                                 this help info
+  -i, --interaction [0|1]                    interaction before proceeding with execution (default: 1)
+  -f, --fatpack [0|1]                        fatpack mode (default: 1)
+  -u, --github-user [raspiblitz|other]       github user to be checked from the repo (default: ${defaultRepo})
+  -b, --branch [v1.7|v1.8]                   branch to be built on (default: ${defaultBranch})
+  -d, --display [lcd35|lcd20|hdmi|headless]  display class (default: lcd)
+  -t, --tweak-boot-drive [0|1]               tweak boot drives (default: 1)
+  -w, --wifi-region [off|US|GB|other]        wifi iso code (default: US) or 'off'
 
 Notes:
   all options, long and short accept --opt=value mode also
@@ -207,8 +207,8 @@ curl --header "X-GitHub-Api-Version:2022-11-28" -s "https://api.github.com/repos
 # DISPLAY-CLASS
 # ----------------------------------------
 # Could be 'hdmi', 'headless' or 'lcd' (lcd is default)
-: "${display:=lcd}"
-range_argument display "lcd" "hdmi" "headless"
+: "${display:=lcd20}"
+range_argument display "lcd35" "lcd20" "hdmi" "headless"
 
 # TWEAK-BOOTDRIVE
 # ---------------------------------------
@@ -630,6 +630,9 @@ else
   echo -e "\nOK group admin exists"
 fi
 
+# add admin to gpio group to be able to control GPIOs (fan control pwm of waveshare NAS device)
+usermod -a -G gpio admin
+
 echo -e "\n*** ADDING SERVICE USER bitcoin"
 # based on https://raspibolt.org/guide/raspberry-pi/system-configuration.html
 # create user and set default password for user
@@ -852,7 +855,7 @@ echo "Provisioning BLITZ WEB SERVICE"
 # *** FATPACK *** (can be activated by parameter - see details at start of script)
 if ${fatpack}; then
   echo "* FATPACK activated"
-  /home/admin/config.scripts/blitz.fatpack.sh || exit 1
+  /home/admin/config.scripts/blitz.fatpack.sh ${display} || exit 1
 else
   echo "* skipping FATPACK"
 fi
@@ -894,13 +897,23 @@ echo "1. login fresh --> user:admin password:raspiblitz"
 echo -e "2. run --> release\n"
 
 # make sure that at least the code is available (also if no internet)
-/home/admin/config.scripts/blitz.display.sh prepare-install || exit 1
+/home/admin/config.scripts/blitz.display.sh prepare-install "${display}" || exit 1
 # (do last - because it might trigger reboot)
 if [ "${display}" != "headless" ] || [ "${baseimage}" = "raspios_arm64" ]; then
   echo "*** ADDITIONAL DISPLAY OPTIONS ***"
   echo "- calling: blitz.display.sh set-display ${display}"
   /home/admin/config.scripts/blitz.display.sh set-display ${display} || exit 1
-  /home/admin/config.scripts/blitz.display.sh rotate 1 || exit 1
+  if [ "${display}" == "lcd20" ]; then
+    # activate fan control service as well
+    chmod +x /home/admin/raspiblitz20lcd/fan_control.py
+    cp /home/admin/raspiblitz20lcd/fan_control.service /etc/systemd/system/fan_control.service
+    chmod 644 /lib/systemd/system/fan_control.service
+    systemctl daemon-reload
+    systemctl enable fan_control.service
+    sudo systemctl start fan_control.service
+  else
+     /home/admin/config.scripts/blitz.display.sh rotate 1 || exit 1
+  fi
 fi
 
 echo "# BUILD DONE - see above"
