@@ -12,8 +12,8 @@ if [ $# -eq 0 ] || [ "$1" = "-h" ] || [ "$1" = "-help" ]; then
   echo
   echo "# sudo blitz.display.sh rotate [on|off]"
   echo "# sudo blitz.display.sh test-lcd-connect"
-  echo "# sudo blitz.display.sh set-display [hdmi|lcd|headless]"
-  echo "# sudo blitz.display.sh prepare-install"
+  echo "# sudo blitz.display.sh set-display [hdmi|lcd35|lcd20|headless]"
+  echo "# sudo blitz.display.sh prepare-install [lcd35|lcd20]"
   exit 1
 fi
 
