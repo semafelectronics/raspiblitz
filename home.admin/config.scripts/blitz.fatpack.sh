@@ -19,7 +19,7 @@ fi
 echo "# raspi_bootdir(${raspi_bootdir})"
 
 # make sure LCD is on (default for fatpack)
-/home/admin/config.scripts/blitz.display.sh set-display lcd
+/home/admin/config.scripts/blitz.display.sh set-display "$1"
 
 # check if sd card needs expansion before fatpack
 source <(sudo /home/admin/config.scripts/blitz.bootdrive.sh status)
