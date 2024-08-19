@@ -5,7 +5,7 @@ wget https://raw.githubusercontent.com/${github_user}/raspiblitz/${branch}/build
 
 if [ "${pack}" = "fatpack" ]; then
   fatpack="1"
-  display="lcd"
+  display="lcd20"
 else
   fatpack="0"
   display="headless"
@@ -15,4 +15,5 @@ fi
 sudo chmod 777 /dev/shm
 
 echo 'Build RaspiBlitz ...'
-bash build_sdcard.sh -f ${fatpack} -u ${github_user} -b ${branch} -t false -w off -i false -d ${display}
+# bash build_sdcard.sh -f ${fatpack} -u ${github_user} -b ${branch} -t false -w off -i false -d ${display}
+bash build_sdcard.sh -f ${fatpack} -u ${github_user} -b ${branch} -t false -w off -i false -d lcd20
