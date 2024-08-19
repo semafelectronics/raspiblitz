@@ -268,7 +268,7 @@ function install_lcd() {
 
     # Downloading LCD Driver from Github
     prepareinstall "$lcd_type"
-    lcd_driver_dir="raspiblitz20lcd"
+    lcd_driver_dir="wavesharelcd-64bit-rpi"
     [ "$lcd_type" == "lcd20" ] && lcd_driver_dir="raspiblitz20lcd"
     cd /home/admin/$lcd_driver_dir
     sudo -u admin git checkout main
